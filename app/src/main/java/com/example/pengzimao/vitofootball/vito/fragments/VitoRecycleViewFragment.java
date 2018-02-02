@@ -40,7 +40,7 @@ public class VitoRecycleViewFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // init recyclerView and adapter
         mRecycleView = getActivity().findViewById(R.id.vito_recycler_view);
-        mAdapter = new NewsAdapter(getContext(), new ArrayList<NewsInfo>());
+        mAdapter = new NewsAdapter(getActivity(), new ArrayList<NewsInfo>());
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 

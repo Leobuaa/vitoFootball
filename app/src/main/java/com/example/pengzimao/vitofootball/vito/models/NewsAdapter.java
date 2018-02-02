@@ -1,8 +1,10 @@
 package com.example.pengzimao.vitofootball.vito.models;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.pengzimao.vitofootball.R;
+import com.example.pengzimao.vitofootball.vito.viewModels.VitoNewsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -43,6 +46,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
+                // set read status
+                List<NewsInfo> newsList = NewsRepository.getFootballNewsList(mContext);
+                if (position < newsList.size()) {
+                    NewsInfo info = newsList.get(position);
+                    info.hasRead = true;
+                    // update data
+                    if (mContext instanceof FragmentActivity) {
+                        ViewModelProviders.of((FragmentActivity) mContext).get(VitoNewsViewModel.class).getNewsInfoList().setValue(newsList);
+                    }
+                }
+
                 NewsInfo info = mNewsInfoList.get(position);
                 Uri uri = Uri.parse(info.mUrl);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -58,6 +72,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         if (newsInfo != null) {
             holder.titleTextView.setText(newsInfo.mTitle);
             Picasso.with(mContext).load(newsInfo.mCoverImageUrl).into(holder.coverImageView);
+
+            // set read status
+            if (newsInfo.hasRead) {
+                holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.colorTitleRead));
+            } else {
+                holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.colorTitleDefault));
+            }
         }
     }
 

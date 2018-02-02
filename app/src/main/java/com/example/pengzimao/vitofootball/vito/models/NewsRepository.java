@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by leopeng on 01/02/2018.
@@ -16,6 +15,8 @@ import java.util.List;
 public class NewsRepository {
 
     private static int lastNewsId = 0;
+    private static ArrayList<NewsInfo> newsListCache;
+
     public static ArrayList<NewsInfo> createNewsList(int numContacts) {
         ArrayList<NewsInfo> newsList = new ArrayList<NewsInfo>();
 
@@ -32,9 +33,16 @@ public class NewsRepository {
         return newsList;
     }
 
-    public static ArrayList<NewsInfo> createFootballNewsList(Context context) {
-        ArrayList<NewsInfo> newsList = new ArrayList<NewsInfo>();
+    public static ArrayList<NewsInfo> getFootballNewsList(Context context) {
+        if (newsListCache != null && newsListCache.size() > 10) {
+            return newsListCache;
+        }
+        newsListCache = createFootballNewsList(context);
+        return newsListCache;
+    }
 
+    private static ArrayList<NewsInfo> createFootballNewsList(Context context) {
+        ArrayList<NewsInfo> arrayList = new ArrayList<NewsInfo>();
         try {
             JSONArray jsonArray = new JSONArray(loadJSONFromAssets(context));
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -44,14 +52,14 @@ public class NewsRepository {
                     info.mTitle = item.getString("title");
                     info.mUrl = item.getString("link");
                     info.mCoverImageUrl = item.getString("img_url");
-                    newsList.add(info);
+                    arrayList.add(info);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return newsList;
+        return arrayList;
     }
 
     private static String loadJSONFromAssets(Context context) {

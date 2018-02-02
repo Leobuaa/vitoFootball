@@ -3,7 +3,6 @@ package com.example.pengzimao.vitofootball.vito.viewModels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.example.pengzimao.vitofootball.vito.models.NewsInfo;
 import com.example.pengzimao.vitofootball.vito.models.NewsRepository;
@@ -35,7 +34,7 @@ public class VitoNewsViewModel extends AndroidViewModel {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                mNewsInfoList.postValue(NewsRepository.createFootballNewsList(getApplication()));
+                mNewsInfoList.postValue(NewsRepository.getFootballNewsList(getApplication()));
             }
         });
     }

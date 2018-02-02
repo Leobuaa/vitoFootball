@@ -8,6 +8,7 @@ public class NewsInfo {
     public String mTitle;
     public String mUrl;
     public String mCoverImageUrl;
+    public boolean hasRead = false;
 
     public NewsInfo() {
 
