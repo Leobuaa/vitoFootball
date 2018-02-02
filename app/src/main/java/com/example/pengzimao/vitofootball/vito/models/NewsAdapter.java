@@ -1,13 +1,17 @@
 package com.example.pengzimao.vitofootball.vito.models;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.pengzimao.vitofootball.R;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -22,30 +26,39 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         mNewsInfoList = newsInfoList;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView titleTextView;
-        public Button clickButton;
+        public ImageView coverImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             titleTextView = (TextView) itemView.findViewById(R.id.newsTitle);
-            clickButton = (Button) itemView.findViewById(R.id.click);
+            coverImageView = (ImageView) itemView.findViewById(R.id.coverImage);
 
-            clickButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NewsInfo.addOneItem(mNewsInfoList);
-                    notifyItemChanged(mNewsInfoList.size() - 1);
-                }
-            });
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                NewsInfo info = mNewsInfoList.get(position);
+                Uri uri = Uri.parse(info.mUrl);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                mContext.startActivity(intent);
+            }
+
         }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsInfo newsInfo = mNewsInfoList.get(position);
-        holder.titleTextView.setText(newsInfo.mTitle);
+        if (newsInfo != null) {
+            holder.titleTextView.setText(newsInfo.mTitle);
+            Picasso.with(mContext).load(newsInfo.mCoverImageUrl).into(holder.coverImageView);
+        }
     }
 
     @Override

@@ -49,4 +49,6 @@ dependencies {
     // Java8 support for Lifecycles
     implementation "android.arch.lifecycle:common-java8:1.1.0"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
