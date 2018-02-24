@@ -1,7 +1,6 @@
 package com.example.pengzimao.vitofootball.vito.fragments;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
