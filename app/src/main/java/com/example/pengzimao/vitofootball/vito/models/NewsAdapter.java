@@ -47,6 +47,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 // set read status
+                // in this place maybe need to create a news list, it decode json string on main thread
                 List<NewsInfo> newsList = NewsRepository.getFootballNewsList(mContext);
                 if (position < newsList.size()) {
                     NewsInfo info = newsList.get(position);
@@ -67,7 +68,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         NewsInfo newsInfo = mNewsInfoList.get(position);
         if (newsInfo != null) {
             holder.titleTextView.setText(newsInfo.mTitle);
